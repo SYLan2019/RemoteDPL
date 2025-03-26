@@ -365,10 +365,11 @@ class SingleStageDetector(BaseDetector):
             mix_tmp_richness = mix_tmp_richness.reshape(-1)
             s_mix_richness = mix_tmp_richness[det_inds]
 
+            alpha = 0
             #正常图片总得分
-            det_total_scores = torch.square(det_bbox[:, 4] * det_bbox[:, 4] + det_richness * det_richness)
+            det_total_scores = torch.sqrt(det_bbox[:, 4] * det_bbox[:, 4] + det_richness * det_richness)
             #混合图片总得分
-            det_total_mix_scores = torch.square(s_mix_scores * s_mix_scores + s_mix_richness * s_mix_richness)
+            det_total_mix_scores = torch.sqrt(s_mix_scores * s_mix_scores + s_mix_richness * s_mix_richness)
             #对应点的得分提升值
             det_boost = torch.relu(det_total_mix_scores - det_total_scores)
 
